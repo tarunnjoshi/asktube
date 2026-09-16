@@ -1,0 +1,13 @@
+# Step 2 - transcript fetching
+youtube-transcript-api
+
+# Step 3 - chunking
+langchain-text-splitters
+
+# Step 4 - embeddings (pulls in torch, transformers, numpy)
+sentence-transformers
+
+# Step 5 - vector store
+faiss-cpu
+langchain-community      # the FAISS vectorstore wrapper
+langchain-huggingface    # wraps sentence-transformers for LangChain
