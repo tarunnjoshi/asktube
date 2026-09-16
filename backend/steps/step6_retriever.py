@@ -15,6 +15,7 @@ Run:
 import shutil
 import sys
 import time
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
@@ -31,8 +32,12 @@ DEFAULT_QUERY = "what is the workflow to make the ad?"
 OFF_TOPIC_QUERY = "how do you make a recipe for butter chicken?"
 
 
+@lru_cache(maxsize=1)
 def get_embeddings() -> HuggingFaceEmbeddings:
     """One embeddings object, used for BOTH indexing and querying.
+
+    @lru_cache means the model is loaded from disk ONCE per process and reused.
+    Without it, a web server would reload ~90MB on every single request.
 
     These must always be the same model. Index with one model and query with
     another and you get silent garbage - the vectors live in different spaces.

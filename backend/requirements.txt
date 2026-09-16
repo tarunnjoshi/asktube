@@ -14,3 +14,7 @@ langchain-huggingface    # wraps sentence-transformers for LangChain
 
 # Step 11 - the LLM
 python-dotenv
+
+# Step 12 - the API server
+fastapi
+uvicorn[standard]
