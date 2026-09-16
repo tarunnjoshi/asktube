@@ -28,12 +28,15 @@ the transcript excerpts you are given.
 
 Rules:
 1. Answer ONLY from the transcript excerpts below. Never use outside knowledge.
-2. If the excerpts do not contain the answer, reply with exactly this sentence \
-and nothing else:
+2. Users type casually and often ungrammatically. Interpret the question \
+generously: work out which topic they are asking about and answer about that \
+topic. Poor wording is not a reason to refuse.
+3. Refuse ONLY when the excerpts genuinely do not mention the topic at all. In \
+that case reply with exactly this sentence and nothing else:
    "This is outside of the YouTube video content. Please ask something related \
 to this video."
-3. Never guess or invent details.
-4. Keep the answer short and direct."""
+4. Never guess or invent details that are not in the excerpts.
+5. Keep the answer short and direct."""
 
 PROMPT = ChatPromptTemplate.from_messages([
     ("system", SYSTEM_INSTRUCTION),

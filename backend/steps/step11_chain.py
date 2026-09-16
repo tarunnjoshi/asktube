@@ -8,31 +8,39 @@ Run:
     python steps/step11_chain.py "<youtube url>" "your question"
 """
 
+import logging
 import sys
 import time
 
 from dotenv import load_dotenv
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
-
-from config import LLM_MAX_TOKENS, LLM_MODEL, LLM_TEMPERATURE
+from langchain_google_genai import ChatGoogleGenerativeAI
+from config import (
+    GEMINI_MODEL,
+    LLM_MAX_TOKENS,
+    LLM_TEMPERATURE,
+    LLM_THINKING_BUDGET,
+)
 from pipeline import get_retriever
 from step10_prompt import PROMPT, format_context
 
 load_dotenv()
 
+# Google's SDK prints a long "automatic function calling is not recommended"
+# notice on every call. We do not use function calling, so it is pure noise.
+logging.getLogger("google_genai.models").setLevel(logging.ERROR)
+logging.getLogger("google.genai.models").setLevel(logging.ERROR)
 
-def get_llm() -> ChatHuggingFace:
-    """The LLM. Runs on HuggingFace's servers - nothing loads on your laptop."""
-    endpoint = HuggingFaceEndpoint(
-        model=LLM_MODEL,
-        task="text-generation",
-        max_new_tokens=LLM_MAX_TOKENS,
+
+def get_llm() -> ChatGoogleGenerativeAI:
+    """The LLM. LangChain's own Gemini integration - we just pass the name."""
+    return ChatGoogleGenerativeAI(
+        model=GEMINI_MODEL,
         temperature=LLM_TEMPERATURE,
-        timeout=60,
+        max_output_tokens=LLM_MAX_TOKENS,
+        thinking_budget=LLM_THINKING_BUDGET,
     )
-    return ChatHuggingFace(llm=endpoint)
 
 
 def build_chain(url_or_id: str):

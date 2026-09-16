@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>
+    <img src="icons/icon32.png" alt="" class="logo" />
+    <div class="titles">
+      <h1>AskTube</h1>
+      <p id="video-line" class="subtitle">checking page…</p>
+    </div>
+    <span id="server-dot" class="dot dot-unknown" title="server status"></span>
+  </header>
+
+  <main>
+    <textarea
+      id="question"
+      rows="3"
+      placeholder="Ask anything about this video…"
+      disabled
+    ></textarea>
+
+    <button id="ask" disabled>Ask</button>
+
+    <div id="output" class="output" hidden>
+      <div id="answer" class="answer"></div>
+      <div id="meta" class="meta"></div>
+    </div>
+
+    <div id="error" class="error" hidden></div>
+  </main>
+
+  <!-- Manifest V3 forbids inline <script>, so all logic lives in popup.js -->
+  <script src="popup.js"></script>
+</body>
+</html>

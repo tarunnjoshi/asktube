@@ -143,7 +143,27 @@ python steps/step11_chain.py "<url>" "what is the workflow to make the ad?"
 - [x] Prompt assembly with anti-hallucination guard
 - [x] LLM via HuggingFace Inference API (Llama 3.1 8B Instruct)
 - [x] Single LangChain LCEL chain — `chain.invoke(question)`, 2.7-3.6s end to end
-- [ ] FastAPI endpoint
-- [ ] Chrome extension (Manifest V3)
+- [x] FastAPI endpoint — `POST /ask`, chains cached per video
+- [x] Chrome extension (Manifest V3)
 
 Requires a free HuggingFace token in `backend/.env` (see `.env.example`).
+
+### Known limits
+
+- The embedding model is English-only. Transcripts in other languages are
+  fetched and answered correctly, but retrieval quality drops on long
+  non-English videos. A multilingual model would need a smaller `chunk_size`.
+- Timestamps are discarded during chunking, so answers cannot yet cite a
+  moment in the video.
+
+## Running it
+
+Start the backend:
+
+```bash
+cd backend
+uvicorn api:app --reload --port 8000
+```
+
+Load the extension: `chrome://extensions` -> Developer mode -> Load unpacked
+-> select `extension/`. Then open any YouTube video and click the icon.

@@ -49,9 +49,39 @@ def extract_video_id(url_or_id: str) -> str:
 
 
 def fetch_transcript(video_id: str, languages=("en", "en-US", "en-GB")):
-    """Return the caption snippets for this video, preferring English."""
+    """Return the best caption track available, in order of preference:
+
+      1. English as published
+      2. Another language that YouTube can auto-translate into English
+      3. Whatever language does exist, untranslated
+
+    Hardcoding English made the app fail on any non-English video, which is a
+    lot of YouTube. Step 3 does not care what language the text is in.
+    """
     api = YouTubeTranscriptApi()
-    return api.fetch(video_id, languages=list(languages))
+
+    # 1. English, the easy path
+    try:
+        return api.fetch(video_id, languages=list(languages))
+    except NoTranscriptFound:
+        pass
+
+    # Raises TranscriptsDisabled if the video has no captions at all.
+    available = api.list(video_id)
+
+    # 2. something translatable into English
+    for transcript in available:
+        if transcript.is_translatable and any(
+            language.language_code == "en"
+            for language in transcript.translation_languages
+        ):
+            return transcript.translate("en").fetch()
+
+    # 3. take the original language and carry on
+    for transcript in available:
+        return transcript.fetch()
+
+    raise NoTranscriptFound(video_id, list(languages), available)
 
 
 def main() -> None:

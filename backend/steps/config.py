@@ -34,12 +34,21 @@ TOP_K = 4               # how many chunks the retriever hands to the LLM
 INDEX_DIR = "faiss_index"   # one subfolder per video id
 
 # ---------------------------------------------------------------------------
-# Step 11 - the LLM (runs on HuggingFace's servers, not your laptop)
+# Step 11 - the LLM
 # ---------------------------------------------------------------------------
-# Picked by running step11_find_model.py - it was the one that answered.
-LLM_MODEL = "meta-llama/Llama-3.1-8B-Instruct"
+# To use a different provider, swap the one import + one line in
+# step11_chain.get_llm() - e.g. ChatOllama(model="llama3.2:3b") for local.
+GEMINI_MODEL = "gemini-flash-latest"
 
 # Low temperature because this is a FACTUAL task. We want the model to repeat
-# what the transcript says, not to be creative. 0.8 (the default) invents things.
+# what the transcript says, not to be creative.
 LLM_TEMPERATURE = 0.2
-LLM_MAX_TOKENS = 512
+LLM_MAX_TOKENS = 1024
+
+# Gemini Flash is a REASONING model: by default it burns output tokens on
+# internal "thinking" before it writes anything. With a small token ceiling it
+# spends the whole budget thinking and returns an EMPTY string - no error.
+#
+# Our task needs no reasoning. The answer is already in the retrieved chunks;
+# the model only has to extract it. So we turn thinking off.
+LLM_THINKING_BUDGET = 0
