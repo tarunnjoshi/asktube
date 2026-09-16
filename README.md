@@ -122,6 +122,13 @@ python steps/step3_chunks.py      "<url>"          # clean + chunk, shows the ov
 python steps/step4_embeddings.py  "<url>" "<q>"    # token budget + search by hand
 python steps/step5_vectorstore.py "<url>"          # build, save, reload, verify
 python steps/step6_retriever.py   "<url>" "<q>"    # caching + MMR vs similarity
+python steps/step10_prompt.py     "<url>" "<q>"    # the assembled prompt, before the LLM
+```
+
+Ask a question end to end:
+
+```bash
+python steps/step11_chain.py "<url>" "what is the workflow to make the ad?"
 ```
 
 ---
@@ -133,8 +140,10 @@ python steps/step6_retriever.py   "<url>" "<q>"    # caching + MMR vs similarity
 - [x] Local embeddings
 - [x] FAISS vector store with on-disk caching (2.2s cold -> 0.05s warm)
 - [x] Retriever with MMR
-- [ ] Prompt assembly with anti-hallucination guard
-- [ ] LLM via HuggingFace Inference API
-- [ ] Single LangChain LCEL chain
+- [x] Prompt assembly with anti-hallucination guard
+- [x] LLM via HuggingFace Inference API (Llama 3.1 8B Instruct)
+- [x] Single LangChain LCEL chain — `chain.invoke(question)`, 2.7-3.6s end to end
 - [ ] FastAPI endpoint
 - [ ] Chrome extension (Manifest V3)
+
+Requires a free HuggingFace token in `backend/.env` (see `.env.example`).

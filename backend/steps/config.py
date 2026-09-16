@@ -32,3 +32,14 @@ EMBEDDING_MODEL = "sentence-transformers/multi-qa-MiniLM-L6-cos-v1"
 # ---------------------------------------------------------------------------
 TOP_K = 4               # how many chunks the retriever hands to the LLM
 INDEX_DIR = "faiss_index"   # one subfolder per video id
+
+# ---------------------------------------------------------------------------
+# Step 11 - the LLM (runs on HuggingFace's servers, not your laptop)
+# ---------------------------------------------------------------------------
+# Picked by running step11_find_model.py - it was the one that answered.
+LLM_MODEL = "meta-llama/Llama-3.1-8B-Instruct"
+
+# Low temperature because this is a FACTUAL task. We want the model to repeat
+# what the transcript says, not to be creative. 0.8 (the default) invents things.
+LLM_TEMPERATURE = 0.2
+LLM_MAX_TOKENS = 512

@@ -11,3 +11,6 @@ sentence-transformers
 faiss-cpu
 langchain-community      # the FAISS vectorstore wrapper
 langchain-huggingface    # wraps sentence-transformers for LangChain
+
+# Step 11 - the LLM
+python-dotenv
